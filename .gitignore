@@ -1,13 +1,25 @@
+# General things to ignore
+build/
+dist/
+*.egg-info/
+*.egg
+*.py[cod]
 .idea
 .DS_Store
 __pycache__/
-
-.local/
-.local
+*.so
+*~
 
 venv/*
 venv/
 venv
+
+.cache
+
+
+# Project specific things to ignore
+.local/
+.local
 
 _models/data/*
 !_models/data/solution
