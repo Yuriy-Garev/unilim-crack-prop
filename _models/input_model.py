@@ -1,6 +1,3 @@
-import os
-
-
 class InputModel:
     def __init__(self):
         self.Entries = []

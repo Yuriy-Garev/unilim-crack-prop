@@ -1,11 +1,10 @@
-# from scipy.linalg import svd as sp_svd
-from numpy.linalg import svd as np_svd
-from numpy.linalg import pinv, norm
 from numpy import newaxis, vstack, sqrt, arctan, zeros, cos, sin, float_, diag, savetxt, dot
+from numpy.linalg import pinv, norm
+from numpy.linalg import svd as np_svd
 
 from _models.data_keeper_model import DataKeeper
-from templates.helpers.clamp_value import ClampPositive as clamp
 from _models.helpers.data_type_converter import list2array
+from templates.helpers.clamp_value import ClampPositive as clamp
 
 
 class SvdModel:

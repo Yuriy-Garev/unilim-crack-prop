@@ -1,7 +1,9 @@
+from typing import List
+
 from numpy import array, float_
 
 
-def list2array(inputList):
+def list2array(inputList: List) -> array:
     """
     Converts list() to numpy.array()
     :param inputList: list()

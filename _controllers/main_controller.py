@@ -1,8 +1,6 @@
-from sys import exit
-from _models.data_keeper_model import DataKeeper
 from _models.csv_model import CsvModel
+from _models.data_keeper_model import DataKeeper
 from _models.svd_model import SvdModel
-
 from _views.main_view import MainView
 
 # creating DataKeeper model
@@ -34,9 +32,3 @@ def StartController():
     mainView.StartView()
     BeginInvoke()
     return mainView.EndView()
-
-
-if __name__ == "__main__":
-    # running controller function
-    StartController()
-    exit(0)

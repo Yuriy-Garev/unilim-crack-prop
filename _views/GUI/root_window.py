@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+
 from templates.helpers.clamp_value import ClampPositive as clamp
 
 
@@ -108,12 +108,11 @@ class Application(tk.Tk):
         self.gridElements.get((row, col)).config(width=width, height=height)
         return self.gridElements.get((row, col))
 
-
-def main():
-    app = Application(winHeight=700)
-    app.mainloop()  # Wait for events
-    exit(0)
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#     app = Application(winHeight=700)
+#     app.mainloop()  # Wait for events
+#     exit(0)
+#
+#
+# if __name__ == '__main__':
+#     main()

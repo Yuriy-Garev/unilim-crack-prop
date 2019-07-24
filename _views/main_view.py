@@ -1,22 +1,16 @@
 import os
-from time import sleep
 from random import choices
-import threading
 
-import tkinter as tk
-from tkinter import ttk
-import seaborn as sns
 import matplotlib.pyplot as plt
+import seaborn as sns
 from numpy import concatenate, linspace, sqrt, set_printoptions, array
-from _views.GUI.printer import Printer
-from _views.GUI.plotter import Plotter
-from _views.GUI.root_window import Application
 
-from _views.helpers.string_formatter import PreformatArrayLikeData
-
-from templates.EventSystem import Subscriber
 from _models.data_keeper_model import DataKeeper
-
+from _views.GUI.plotter import Plotter
+from _views.GUI.printer import Printer
+from _views.GUI.root_window import Application
+from _views.helpers.string_formatter import PreformatArrayLikeData
+from templates.EventSystem import Subscriber
 
 initDots = [
     (50., 50.),

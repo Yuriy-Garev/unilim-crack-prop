@@ -11,22 +11,22 @@ class FStack:
         super().__setattr__("_stackQueue", [])
         super().__setattr__("_fullReturn", {})
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name, value) -> None:
         """"""
         msg = "'%s' has no attribute %s" % (self.__class__, name)
         raise AttributeError(msg)
 
-    def __str__(self):
+    def __str__(self) -> str:
         tmp = []
         for f in self._stackQueue:
             tmp.append(f.__name__)
         tmp.reverse()
         return str(tmp)
 
-    def getStack(self) -> list:
+    def getStack(self):
         return self._stackQueue
 
-    def stackIt(self, obj) -> callable:
+    def stackIt(self, obj):
         try:
             if callable(obj):
                 self._stackQueue.append(obj)

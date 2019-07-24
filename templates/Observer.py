@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from functools import wraps
 from typing import Callable, Any, Dict
 
@@ -60,22 +61,3 @@ def event_tracker(event: Callable):
 
         wrapper.wrapped = True
         return wrapper
-
-
-if __name__ == '__main__':
-
-    def example(label):
-        print(label)
-        return "Event return printed"
-
-    def sub1():
-        print("sub1 triggered")
-
-    def sub2():
-        print("sub2 triggered")
-
-    # example = sub2event(sub1, example)
-    # example = sub2event(sub2, example)
-    # print(example("Print inside event body triggered"))
-
-    exit(0)
