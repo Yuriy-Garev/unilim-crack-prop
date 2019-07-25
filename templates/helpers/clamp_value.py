@@ -1,9 +1,9 @@
-from typing import Optional
+from typing import Union
 
 
-def Clamp(value: Optional[float, int],
-          lowerBound: Optional[float, int],
-          upperBound: Optional[float, int]) -> Optional[float, int]:
+def Clamp(value: Union[float, int],
+          lowerBound: Union[float, int],
+          upperBound: Union[float, int]) -> Union[float, int]:
     """
     Clamp the given value between lower and upper bounds.
     if value > upper_bound -> return upper_bound
@@ -18,8 +18,8 @@ def Clamp(value: Optional[float, int],
     return max(lowerBound, min(upperBound, value))
 
 
-def ClampPositive(value: Optional[float, int],
-                  upperBound: Optional[float, int]) -> Optional[float, int]:
+def ClampPositive(value: Union[float, int],
+                  upperBound: Union[float, int]) -> Union[float, int]:
     """
     Clamp the given value between lower and upper bounds.
     if value > upper_bound -> return upper_bound

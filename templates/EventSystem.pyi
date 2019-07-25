@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import Callable, Any, List, Iterable, Optional
+
+from typing import Callable, Any, List, Iterable, Optional, Union
 
 
 class EventVisitor: ...
@@ -15,16 +16,18 @@ class Event:
     # which allow <Subscriber> to be subscribed to it.
     __subscribers: List
 
+    def __init__(self) -> None: ...
+
     @property
-    def Subscriptions(self) -> Optional[List[Callable], None]: ...
+    def Subscriptions(self) -> Optional[List[Callable]]: ...
     # Returns a list of the <Event> subscribers
 
     @Subscriptions.setter
-    def Subscriptions(self, *subscribers: Optional[Iterable[Callable], Callable]) -> None: ...
+    def Subscriptions(self, *subscribers: Union[Iterable[Callable], Callable]) -> None: ...
     # Adds new <Event> subscribers"""
 
     @Subscriptions.deleter
-    def Subscriptions(self, *subscribers: Optional[Iterable[Callable], Callable]) -> None: ...
+    def Subscriptions(self, *subscribers: Union[Iterable[Callable], Callable]) -> None: ...
     # Removes all the <Event> subscribers
 
     def __iadd__(self, other: Callable) -> Event: ...
@@ -58,7 +61,7 @@ class Subscriber(EventVisitor):
     # An Interface for EventSystem subscribers like objects
     # Inheriting from this class gives a child an <Subscriber> features
     # which allow it to be subscribed to <Event> objects.
-    __event: Optional[Event, None]
+    __event: Optional[Event]
 
     def __init__(self, event: Event) -> None: ...
 

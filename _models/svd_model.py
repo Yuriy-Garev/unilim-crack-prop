@@ -9,21 +9,23 @@ from templates.helpers.clamp_value import ClampPositive as clamp
 
 class SvdModel:
     def __init__(self, rowsNum, colsNum, x1_0=0., x2_0=0., kappa=1.9):
-        self.Kappa = kappa
-        self.Csv = None
-        self.RowsNum = rowsNum
-        self.ColsNum = colsNum
-        self.X1_0 = x1_0
-        self.X2_0 = x2_0
-        self.X1 = None
-        self.X2 = None
-        self.U = None
-        self.P = zeros((rowsNum, 2 * colsNum), dtype=float_)
-        self.Q = zeros((rowsNum, 2 * colsNum), dtype=float_)
-        self.B = None
-        self.R2Norm = []
-        self.Theta = []
-        self.Solution = None
+        self.Kappa = kappa  # Material property constant
+        self.Csv = None  # numpy array with points coordinates (and/or forces acting on the object)
+        self.RowsNum = rowsNum  # number of rows to read from csv file
+        self.ColsNum = colsNum  # number of columns to read from csv file
+        self.X1_0 = x1_0  # the crack origin ...
+        self.X2_0 = x2_0  # ... (origin of forces application)
+        self.X1 = None  # new positions ...
+        self.X2 = None  # ... of points on the object
+        self.U = None  # vector of points displacement
+        self.P = zeros((rowsNum, 2 * colsNum), dtype=float_)  # vector of basis functions for William's series
+        self.Q = zeros((rowsNum, 2 * colsNum), dtype=float_)  # vector of basis functions for William's series
+        self.B = None  # matrix built from P and Q
+        self.R2Norm = []  # vector of radius' values from each point on the object to the crack center
+        self.Theta = []  # vector of angles for each point on the object
+                         # relative to vertical axis passing through the crack center
+        self.Solution = None  # vector Solution (in this particular case represents Forces applied
+        # to crack the object and cause a displacement of the initial points coordinates on the value U
 
     @staticmethod
     def GetColumn(numpy_array, idx):
@@ -66,15 +68,18 @@ class SvdModel:
 
     @staticmethod
     def SaveAsCsv(array_like_data, file_name_str="csv_file"):
-        savetxt(DataKeeper().root_dir+'/solution'+'/{}.csv'.format(file_name_str), array_like_data, fmt='%.4f', delimiter=',')
+        savetxt(DataKeeper().root_dir+f"/solution/{file_name_str}.csv",
+                array_like_data,
+                fmt='%.4f',
+                delimiter=',')
 
     def ApplyDecomposition(self):
         self.Csv = DataKeeper().GetEntryByKey('csv_model_data')
         self.RowsNum = clamp(self.RowsNum, self.Csv.shape[0])
         self.ColsNum = clamp(self.ColsNum, self.Csv.shape[1])
 
-        x1_i = self.GetColumn(self.Csv, 0)
-        x2_i = self.GetColumn(self.Csv, 1)
+        x1_i = self.GetColumn(self.Csv, 0)  # initial coordinates ...
+        x2_i = self.GetColumn(self.Csv, 1)  # ... of points on the object
         u1 = self.GetColumn(self.Csv, 2)
         u2 = self.GetColumn(self.Csv, 3)
 
@@ -100,7 +105,7 @@ class SvdModel:
         self.SaveAsCsv(S, "S")
         self.SaveAsCsv(V.T, "V")
 
-        self.Solution = dot(dot(V.T, pinv(S)), dot(U.T, self.U))
+        self.Solution = dot(dot(V.T, pinv(S)), dot(U.T, self.U))  # looking for the solution in the least square meaning
         # self.Solution[0, 0] = 0
 
         self.SaveAsCsv(self.Solution, "_Solution")

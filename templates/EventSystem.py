@@ -1,10 +1,24 @@
 from __future__ import annotations
+
 from typing import Any
-from templates.helpers.object_type_checker import *
+
 from getclass import getclass
+
+from templates.helpers.object_type_checker import *
+
+
+class EventVisitor:
+    """
+    Label-Interface for <Event> class objects
+
+    Inheriting from this class labels child as <EventVisitor> for <Event> subscription.
+    This label allows methods of such class to be added to an <Event> subscribers list.
+    """
+    pass
 
 
 class Event:
+
     def __init__(self):
         """Instantiated the object type of <Event> with the list() of Subscriptions"""
 
@@ -29,8 +43,8 @@ class Event:
         else:
             raise ValueError("ONLY objects of the following type are allowed to be an Event subscribers"
                              "\n\t- <static function>\n"
-                             "\t- <IEventVisitor>\n"
-                             "\t- <method IEventVisitor>")
+                             "\t- <EventVisitor>\n"
+                             "\t- <method EventVisitor>")
 
     def __isub__(self, other):
         """Removes a subscriber
@@ -64,9 +78,9 @@ class Event:
 
     @staticmethod
     def isVisitor(obj):
-        """Check if object is type of <IEventVisitor>"""
+        """Check if object is type of <EventVisitor>"""
         IsAnyIn = lambda arg1, arg2: any(i in arg2 for i in arg1)
-        allowedToProceed = (eval("IEventVisitor"), eval("Subscriber"))
+        allowedToProceed = (eval("EventVisitor"), eval("Subscriber"))
 
         if isFunction(obj):
             return True

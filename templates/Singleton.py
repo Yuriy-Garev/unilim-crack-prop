@@ -1,7 +1,11 @@
-class Singleton(type):
-    _instances = {}
+from typing import Optional, Dict, Any
 
-    def __call__(cls, *args, **kwargs):
+
+class Singleton(type):
+    _instances: Optional[Dict] = {}
+
+    def __call__(cls, *args: Any,
+                 **kwargs: Any) -> object:
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         # else:

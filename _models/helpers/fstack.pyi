@@ -3,7 +3,7 @@ from typing import Callable, Dict, List
 
 class FStack:
 
-    __slots__ = ['_stackQueue', '_fullReturn']
+    __slots__: List[str]
 
     def __init__(self) -> None: ...
 

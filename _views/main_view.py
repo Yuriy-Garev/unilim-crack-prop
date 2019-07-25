@@ -1,46 +1,19 @@
+from __future__ import annotations
+
 import os
-from random import choices
+from typing import Optional, List, Any, Union
 
 import matplotlib.pyplot as plt
 import seaborn as sns
 from numpy import concatenate, linspace, sqrt, set_printoptions, array
 
 from _models.data_keeper_model import DataKeeper
-from _views.GUI.plotter import Plotter
-from _views.GUI.printer import Printer
-from _views.GUI.root_window import Application
-from _views.helpers.string_formatter import PreformatArrayLikeData
-from templates.EventSystem import Subscriber
-
-initDots = [
-    (50., 50.),
-    (100., 50.),
-    (50., 100.),
-    (100., 100.)
-]
-newDots = [
-    (55., 51.),
-    (108., 47.),
-    (45., 120.),
-    (110., 120.)
-]
+from templates.EventSystem import Subscriber, Event
 
 
 class MainView(Subscriber):
-    def __init__(self, event, dataPath=None):
+    def __init__(self, event: Event, dataPath: Optional[str] = None) -> None:
         super().__init__(event)
-
-        self.guiThread = None
-
-        # Interface part
-        self.app = Application(winWidth=600, winHeight=700)
-
-        self.plotter = Plotter(self.app.gridElements.get((0, 0)), self.app.defaultColors)
-        self.plotter.pack(expand=True, fill='both')
-
-        self.printer = Printer(self.app.gridElements.get((1, 0)), self.app.defaultColors)
-        self.printer.pack(expand=True, fill='both')
-        # End of Interface part
 
         self.SvdData = None
         self.DataPath = None
@@ -50,14 +23,16 @@ class MainView(Subscriber):
         else:
             raise TypeError("None cannot be considered a file path")
 
-    def ValidatePath(self, pathStr):
+    def ValidatePath(self, pathStr: str) -> None:
         if os.path.isfile(pathStr):
             self.DataPath = pathStr
         else:
             raise FileNotFoundError
 
     @staticmethod
-    def PlotVectors(vecs, cols, alpha=1):
+    def PlotVectors(vecs: array,
+                    cols: array,
+                   alpha: Union[int, float] = 1) -> None:
         """
         Plot set of vectors.
 
@@ -71,11 +46,6 @@ class MainView(Subscriber):
             first vector in red and the second in blue.
         alpha : float
             Opacity of vectors
-
-        Returns:
-
-        fig : instance of matplotlib.figure.Figure
-            The figure of the vectors
         """
         plt.axvline(x=0, color='#A9A9A9', zorder=0)
         plt.axhline(y=0, color='#A9A9A9', zorder=0)
@@ -93,7 +63,8 @@ class MainView(Subscriber):
                        angles='xy', scale_units='xy', scale=1, color=cols[i],
                        alpha=alpha_i)
 
-    def MatrixToPlot(self, matrix, vectorsCol=['#FF9A13', '#1190FF']):
+    def MatrixToPlot(self, matrix: array,
+                       vectorsCol: List[str] = ('#FF9A13', '#1190FF')) -> None:
         """
         Modify the unit circle and basis vector by applying a matrix.
         Visualize the effect of the matrix in 2D.
@@ -104,11 +75,6 @@ class MainView(Subscriber):
             2D matrix to apply to the unit circle.
         vectorsCol : HEX color code
             Color of the basis vectors
-
-        Returns:
-
-        fig : instance of matplotlib.figure.Figure
-            The figure containing modified unit circle and basis vectors.
         """
 
         # Unit circle
@@ -131,22 +97,15 @@ class MainView(Subscriber):
         plt.plot(x1_neg, y1_neg, 'g', alpha=0.5)
 
     @staticmethod
-    def DisplayEntries(entries):
+    def DisplayEntries(entries: Any) -> None:
         print("\n\nThe object <entries> is type of: ", type(entries), '\n', entries, '\n')
 
     def StartView(self):
-        print('\nApplication has started drawing {} UI'.format(type(self).__name__))
-        # if self.guiThread in None:
-        #     self.guiThread = threading.Thread(target=self.ReDrawGUI)
-        #     self.guiThread.start()
-
-    def ReDrawGUI(self):
-        if isinstance(self.app, Application):
-            self.app.mainloop()
+        print(f'\nApplication has started rendering {type(self).__name__} UI')
 
     def EndView(self):
+        print(f'\nApplication has stopped rendering {type(self).__name__} UI')
         print('\nEnd of Process')
-        self.app.destroy()
 
     def RenderPlots(self):
         sns.set()
@@ -200,9 +159,3 @@ class MainView(Subscriber):
         except IndexError:
             print("TOO SOON! You have awaken me TOO SOON, Executus!")
             print("SVD is not ready yet")
-
-        initDotsColor, newDotsColor = choices(self.app.defaultColorScheme, k=2)
-        self.plotter.DisplayDots(initDots, initDotsColor)
-        self.plotter.DisplayDots(newDots, newDotsColor, isFilled=False)
-        self.printer.Print(PreformatArrayLikeData(array_like_data=initDots, array_name="Initial Dots"), initDotsColor)
-        self.printer.Print("\n" + PreformatArrayLikeData(array_like_data=newDots, array_name="New Dots"), newDotsColor)

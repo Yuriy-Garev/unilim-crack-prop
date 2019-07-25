@@ -14,7 +14,7 @@ setup(
     url='https://bitbucket.org/Yuriy_Garev/wcrack/',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    license='OSL 3.0',
+    license='MIT',
     author='Yurii Hariev',
     author_email='yuriy.garev@gmail.com',
     description='The package is designed for computations of wood behavior under the stress',
